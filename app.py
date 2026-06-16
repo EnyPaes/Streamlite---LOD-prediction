@@ -190,17 +190,19 @@ def prever(condicoes, pl):
 # ---------------------------------------------------------------------------
 # 5. ROTAS
 # ---------------------------------------------------------------------------
+@app.route('/')
+def index():
+    return send_from_directory('static', 'index.html')
+ 
 @app.route('/api/options', methods=['GET'])
 def options():
-    """Retorna as opções disponíveis para popular os selects do front-end."""
     return jsonify({
         'analitos': {k: v['nome'] for k, v in ANALITOS.items()},
         'metodos': ['CV', 'DPV', 'LSV', 'SWV', 'stripping'],
         'eletrodos_referencia': ['AgAgCl', 'SCE'],
         'substratos': ['GCE', 'CPE', 'SPE', 'GS', 'Au', 'BDD', 'PGE'],
     })
-
-
+ 
 @app.route('/api/predict', methods=['POST'])
 def predict():
     try:
@@ -213,8 +215,7 @@ def predict():
         return jsonify({'ok': True, 'resultado': resultado})
     except Exception as e:
         return jsonify({'ok': False, 'erro': str(e)}), 500
-
-
+ 
 @app.route('/api/health', methods=['GET'])
 def health():
     try:
@@ -222,10 +223,6 @@ def health():
         return jsonify({'ok': True, 'modelo': pl['model_name']})
     except Exception as e:
         return jsonify({'ok': False, 'erro': str(e)}), 500
-
-@app.route('/')
-def index():
-    return app.send_static_file('index.html')
-
+ 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
