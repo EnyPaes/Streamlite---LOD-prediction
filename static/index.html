@@ -441,7 +441,7 @@
           </svg>
         </div>
         <div class="gauge-value"><span id="gauge-number">—</span><span class="gauge-unit">%</span></div>
-        <div class="gauge-label">Probabilidade de LOD ≤ 0,01 µM</div>
+        <div class="gauge-label">Probabilidade de LOD ≤ 0,01</div>
       </div>
 
       <div class="verdict" id="verdict">—</div>
@@ -598,8 +598,8 @@ function renderResult(res, condicoesInput){
 
   // verdict
   verdictEl.textContent = isGood
-    ? `Provável LOD ≤ ${res.threshold_lod} µM`
-    : `Provável LOD > ${res.threshold_lod} µM`;
+    ? `Provável LOD ≤ ${res.threshold_lod}`
+    : `Provável LOD > ${res.threshold_lod}`;
   verdictEl.className = 'verdict ' + (isGood ? 'good' : 'bad');
 
   // detail list
