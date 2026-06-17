@@ -304,24 +304,7 @@
   .detail-list li span:first-child{color:#5b6962;}
   .detail-list li span:last-child{font-family:var(--mono); font-weight:600; text-align:right;}
 
-  .tips{
-    background:var(--accent-soft);
-    border-radius:3px;
-    padding:1rem 1.1rem;
-    font-size:.84rem;
-  }
-  .tips h3{
-    font-family:var(--mono);
-    font-size:.7rem;
-    letter-spacing:.12em;
-    text-transform:uppercase;
-    color:var(--accent);
-    margin:0 0 .5rem;
-  }
-  .tips ul{margin:0; padding-left:1.2rem;}
-  .tips li{margin-bottom:.35rem;}
-  .tips.bad{background:#f7e3dc;}
-  .tips.bad h3{color:var(--warn);}
+
 
   footer{
     max-width:1100px;
@@ -441,17 +424,14 @@
           </svg>
         </div>
         <div class="gauge-value"><span id="gauge-number">—</span><span class="gauge-unit">%</span></div>
-        <div class="gauge-label">Probabilidade de LOD ≤ 0,01</div>
+        <div class="gauge-label">Probabilidade de LOD ≤ 0,01 µM</div>
       </div>
 
       <div class="verdict" id="verdict">—</div>
 
       <ul class="detail-list" id="detail-list"></ul>
 
-      <div class="tips" id="tips">
-        <h3>Sugestões de ajuste</h3>
-        <ul id="tips-list"></ul>
-      </div>
+
     </div>
   </aside>
 
@@ -542,8 +522,7 @@ const gaugeArc = document.getElementById('gauge-arc');
 const gaugeNumber = document.getElementById('gauge-number');
 const verdictEl = document.getElementById('verdict');
 const detailList = document.getElementById('detail-list');
-const tipsEl = document.getElementById('tips');
-const tipsList = document.getElementById('tips-list');
+
 
 const ARC_LENGTH = 283; // approx semicircle path length for r=90
 
@@ -598,8 +577,8 @@ function renderResult(res, condicoesInput){
 
   // verdict
   verdictEl.textContent = isGood
-    ? `Provável LOD ≤ ${res.threshold_lod}`
-    : `Provável LOD > ${res.threshold_lod}`;
+    ? `Provável LOD ≤ ${res.threshold_lod} µM`
+    : `Provável LOD > ${res.threshold_lod} µM`;
   verdictEl.className = 'verdict ' + (isGood ? 'good' : 'bad');
 
   // detail list
@@ -623,30 +602,7 @@ function renderResult(res, condicoesInput){
     detailList.appendChild(li);
   });
 
-  // tips
-  tipsList.innerHTML = '';
-  const tips = [];
-  if (condicoesInput.pH < 7 || condicoesInput.pH > 9){
-    tips.push('Ajustar o pH para a faixa 7–9 costuma favorecer sensibilidades melhores.');
-  }
-  if (condicoesInput.ConcEleM > 0.1){
-    tips.push('Concentrações de eletrólito entre 0,05 e 0,1 M tendem a apresentar melhores resultados.');
-  }
-  if (condicoesInput.num_mip === 0){
-    tips.push('Adicionar um polímero de impressão molecular (MIP) pode aumentar a seletividade.');
-  }
-  if (condicoesInput.num_nano === 0 && condicoesInput.num_oxidenano === 0){
-    tips.push('Nanopartículas metálicas ou óxidos metálicos nanoestruturados podem aumentar a sensibilidade.');
-  }
-  if (tips.length === 0){
-    tips.push('As condições atuais já seguem padrões associados a bom desempenho.');
-  }
-  tips.forEach(t => {
-    const li = document.createElement('li');
-    li.textContent = t;
-    tipsList.appendChild(li);
-  });
-  tipsEl.className = 'tips ' + (isGood ? '' : 'bad');
+
 }
 </script>
 
